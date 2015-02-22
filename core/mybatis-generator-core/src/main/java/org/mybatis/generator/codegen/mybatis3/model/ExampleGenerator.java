@@ -924,7 +924,21 @@ public class ExampleGenerator extends AbstractJavaGenerator {
         sb.append("\", values, \""); //$NON-NLS-1$
         sb.append(introspectedColumn.getJavaProperty());
         sb.append("\");"); //$NON-NLS-1$
+        
+/*        
+    	if(values != null && values.size() > 0){
+    		addCriterion("BUILD_ID in", values, "buildId");
+    	}else{
+    		addCriterion("1 = ", 0, "buildId");
+    	}
+*/
+        method.addBodyLine("if(values != null && values.size() > 0){");
         method.addBodyLine(sb.toString());
+        method.addBodyLine("}else{");
+        if(inMethod){
+        	method.addBodyLine("addCriterion(\"1 = \", 0, \"buildId\");");
+        }
+        method.addBodyLine("}");
         method.addBodyLine("return (Criteria) this;"); //$NON-NLS-1$
 
         return method;
